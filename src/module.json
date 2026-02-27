@@ -1,0 +1,173 @@
+{
+  "id": "pitchgrid",
+  "name": "PitchGrid",
+  "abbrev": "PG",
+  "version": "0.5.0",
+  "capabilities": {
+    "chainable": true,
+    "component_type": "midi_fx",
+    "chain_params": [
+      {
+        "key": "preset",
+        "name": "Preset",
+        "type": "int",
+        "min": 0,
+        "max_param": "preset_count",
+        "default": 0
+      },
+      {
+        "key": "depth",
+        "name": "Depth",
+        "type": "int",
+        "min": 1,
+        "max": 7,
+        "default": 3,
+        "step": 1
+      },
+      {
+        "key": "stretch",
+        "name": "Stretch",
+        "type": "float",
+        "min": 100.0,
+        "max": 2400.0,
+        "default": 1200.0,
+        "step": 0.5
+      },
+      {
+        "key": "skew",
+        "name": "Skew",
+        "type": "float",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.585,
+        "step": 0.001
+      },
+      {
+        "key": "mode",
+        "name": "Mode",
+        "type": "int",
+        "min": 0,
+        "max": 20,
+        "default": 0,
+        "step": 1
+      },
+      {
+        "key": "root_freq_cents",
+        "name": "Root",
+        "type": "float",
+        "min": -1200.0,
+        "max": 1200.0,
+        "default": 0.0,
+        "step": 5.0
+      },
+      {
+        "key": "layout_type",
+        "name": "Layout",
+        "type": "enum",
+        "options": ["chromatic", "in-key"],
+        "default": 0
+      },
+      {
+        "key": "row_offset",
+        "name": "Row Ofs",
+        "type": "int",
+        "min": 3,
+        "max": 9,
+        "default": 5,
+        "step": 1
+      },
+      {
+        "key": "mpe_bend_range",
+        "name": "PB Range",
+        "type": "int",
+        "min": 1,
+        "max": 96,
+        "default": 48,
+        "step": 1
+      }
+    ],
+    "ui_hierarchy": {
+      "levels": {
+        "root": {
+          "name": "PitchGrid",
+          "list_param": "preset",
+          "count_param": "preset_count",
+          "name_param": "preset_name",
+          "params": [
+            {
+              "key": "depth",
+              "name": "Depth",
+              "type": "int",
+              "min": 1,
+              "max": 7,
+              "default": 3,
+              "step": 1
+            },
+            {
+              "key": "stretch",
+              "name": "Stretch",
+              "type": "float",
+              "min": 100.0,
+              "max": 2400.0,
+              "default": 1200.0,
+              "step": 0.5
+            },
+            {
+              "key": "skew",
+              "name": "Skew",
+              "type": "float",
+              "min": 0.0,
+              "max": 1.0,
+              "default": 0.585,
+              "step": 0.001
+            },
+            {
+              "key": "mode",
+              "name": "Mode",
+              "type": "int",
+              "min": 0,
+              "max": 20,
+              "default": 0,
+              "step": 1
+            },
+            {
+              "key": "root_freq_cents",
+              "name": "Root",
+              "type": "float",
+              "min": -1200.0,
+              "max": 1200.0,
+              "default": 0.0,
+              "step": 5.0
+            },
+            {
+              "key": "layout_type",
+              "name": "Layout",
+              "type": "enum",
+              "options": ["chromatic", "in-key"],
+              "default": 0
+            },
+            {
+              "key": "row_offset",
+              "name": "Row Ofs",
+              "type": "int",
+              "min": 3,
+              "max": 9,
+              "default": 5,
+              "step": 1
+            },
+            {
+              "key": "mpe_bend_range",
+              "name": "PB Range",
+              "type": "int",
+              "min": 1,
+              "max": 96,
+              "default": 48,
+              "step": 1
+            }
+          ],
+          "knobs": ["depth", "stretch", "skew", "mode", "root_freq_cents", "layout_type"]
+        }
+      }
+    }
+  }
+}

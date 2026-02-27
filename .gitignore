@@ -1,0 +1,6 @@
+dist/
+build/
+*.tar.gz
+*.so
+.DS_Store
+analysis/

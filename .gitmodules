@@ -1,0 +1,6 @@
+[submodule "move-anything"]
+	path = move-anything
+	url = https://github.com/charlesvestal/move-anything.git
+[submodule "scalatrix"]
+	path = scalatrix
+	url = https://github.com/pitchgrid-io/scalatrix.git
