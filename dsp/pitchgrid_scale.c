@@ -116,7 +116,7 @@ void pg_scale_recalc(pg_log_fn log) {
         }
     }
 
-    pg_scale_degrees = scalatrix_mos_n0(s_scale_mos);
+    pg_scale_degrees = scalatrix_mos_n(s_scale_mos);
 
     int nL = scalatrix_mos_nL(s_scale_mos);
     int nS = scalatrix_mos_nS(s_scale_mos);
