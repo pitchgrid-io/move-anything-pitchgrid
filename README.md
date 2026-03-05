@@ -35,6 +35,11 @@ PitchGrid generates scales using a two-MOS approach:
 
 Incoming pad MIDI is intercepted via firmware hooks, mapped to the chromatic grid, and output as MPE with per-note pitch bend to achieve microtonal tuning.
 
+## Things to Note
+
+- A single active PitchGrid instance will modify the **pad layout and coloring for all instrument tracks**. Drum tracks remain unaffected.
+- For MIDI note handling (microtonal retuning), a PitchGrid instance is required **on every track** that should be affected by tuning.
+
 ## Building
 
 Requires [Docker](https://www.docker.com/).
