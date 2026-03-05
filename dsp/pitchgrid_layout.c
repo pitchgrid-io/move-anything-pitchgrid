@@ -142,7 +142,7 @@ int pg_layout_set_param(const char *key, const char *val) {
     }
     if (strcmp(key, "row_offset") == 0) {
         int v = atoi(val);
-        if (v >= 3 && v <= 9) pg_row_offset = v;
+        if (v >= 0 && v <= 8) pg_row_offset = v;
         return 1;
     }
     return 0;

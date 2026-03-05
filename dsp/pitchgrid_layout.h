@@ -17,7 +17,7 @@
 /* ── Shared layout state ───────────────────────────────────────── */
 
 extern int pg_layout_type;    /* LAYOUT_CHROMATIC or LAYOUT_IN_KEY */
-extern int pg_row_offset;     /* chromatic steps between rows (3-9) */
+extern int pg_row_offset;     /* chromatic steps between rows (0-8) */
 
 /* ── Functions ─────────────────────────────────────────────────── */
 

@@ -103,6 +103,44 @@ static int json_get_number(const char *json, const char *key, double *out) {
     return 0;
 }
 
+/* ── Chain params (read from module.json, served via get_param) ──── */
+
+#define CHAIN_PARAMS_BUF_SIZE 4096
+static char g_chain_params_json[CHAIN_PARAMS_BUF_SIZE] = "";
+
+static void load_chain_params(const char *module_dir) {
+    char path[512];
+    snprintf(path, sizeof(path), "%s/module.json", module_dir);
+    FILE *f = fopen(path, "r");
+    if (!f) return;
+
+    char buf[8192];
+    size_t n = fread(buf, 1, sizeof(buf) - 1, f);
+    fclose(f);
+    buf[n] = '\0';
+
+    /* Find "chain_params" array and extract it */
+    const char *start = strstr(buf, "\"chain_params\"");
+    if (!start) return;
+    start = strchr(start, '[');
+    if (!start) return;
+
+    /* Find matching ] using bracket depth */
+    const char *end = start + 1;
+    int depth = 1;
+    while (*end && depth > 0) {
+        if (*end == '[') depth++;
+        else if (*end == ']') depth--;
+        end++;
+    }
+
+    int len = (int)(end - start);
+    if (len > 0 && len < CHAIN_PARAMS_BUF_SIZE) {
+        memcpy(g_chain_params_json, start, len);
+        g_chain_params_json[len] = '\0';
+    }
+}
+
 /* ── Instance ─────────────────────────────────────────────────────── */
 
 typedef struct {
@@ -116,7 +154,6 @@ static const host_api_v1_t *g_host = NULL;
 
 static void *pg_create_instance(const char *module_dir,
                                  const char *config_json) {
-    (void)module_dir;
     (void)config_json;
 
     pitchgrid_instance_t *inst = calloc(1, sizeof(pitchgrid_instance_t));
@@ -130,7 +167,8 @@ static void *pg_create_instance(const char *module_dir,
     logf_file("=== PitchGrid instance #%d ===\n", g_instance_count + 1);
 
     if (g_instance_count == 0) {
-        /* First instance: load default preset, install hooks, recalc */
+        /* First instance: load metadata, default preset, install hooks, recalc */
+        load_chain_params(module_dir);
         load_preset(0);  /* 12-TET */
         pg_layout_install(logf_file, diag_log);
         pg_scale_recalc(logf_file);
@@ -259,7 +297,7 @@ static void pg_set_param(void *instance, const char *key,
         }
         if (json_get_number(val, "row_offset", &fval) == 0) {
             int v = (int)fval;
-            if (v >= 3 && v <= 9) pg_row_offset = v;
+            if (v >= 0 && v <= 8) pg_row_offset = v;
         }
         if (json_get_number(val, "mpe_bend_range", &fval) == 0 && inst) {
             char tmp[16];
@@ -305,6 +343,15 @@ static int pg_get_param(void *instance, const char *key,
         return snprintf(buf, buf_len, "%d", PG_PRESET_COUNT);
     if (strcmp(key, "preset_name") == 0)
         return snprintf(buf, buf_len, "%s", pg_presets[g_current_preset].name);
+
+    if (strcmp(key, "chain_params") == 0 && g_chain_params_json[0]) {
+        int len = (int)strlen(g_chain_params_json);
+        if (len < buf_len) {
+            memcpy(buf, g_chain_params_json, len + 1);
+            return len;
+        }
+        return -1;
+    }
 
     /* State serialization (host calls this when saving a set) */
     if (strcmp(key, "state") == 0) {
